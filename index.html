@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💛 Nuestra Historia</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="glass-card" id="main-container">
+        <div id="msg">¿Lista para recordar? 💛</div>
+        <div id="media"></div>
+        <button id="btn">Iniciar historia</button>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="audio/yasuko-umbrella-152628.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const caps = [
+            "Capítulo 1: Cuando nos conocimos... 💛",
+            "Capítulo 2: Sin darnos cuenta nos volvimos mejores amigos 💛",
+            "Capítulo 3: Momentos compartidos, risas, locuras jaja 🎥",
+            "Capítulo 4: Siempre estas ahí para mí 💛",
+            "Capítulo 5: Esto no es solo amistad… es familia 💛"
+        ];
+
+        let i = 0;
+        const btn = document.getElementById("btn");
+        const msg = document.getElementById("msg");
+        const media = document.getElementById("media");
+        const musica = document.getElementById("musica");
+
+        btn.onclick = () => {
+            btn.classList.add("hidden");
+            musica.volume = 0.5;
+            musica.play().catch(e => console.log("Error:", e));
+            lanzarCorazones();
+            progresarHistoria();
+        };
+
+        function progresarHistoria() {
+            if (i >= caps.length) {
+                final();
+                return;
+            }
+
+            msg.style.opacity = 0;
+            
+            setTimeout(() => {
+                msg.innerText = caps[i];
+                msg.style.opacity = 1;
+
+                if (i === 0) mostrarMedia("img/WhatsApp Image 2026-04-23 at 11.40.20 PM (1).jpeg", "img");
+                else if (i === 1) mostrarMedia("img/WhatsApp Image 2026-04-23 at 11.40.20 PM.jpeg", "img");
+                else if (i === 2) {
+                    mostrarMedia("video/dbe0ac9e-e24c-43d1-9d51-abefdfe1f874.mp4", "video");
+                    i++;
+                    setTimeout(progresarHistoria, 9500); 
+                    return;
+                } 
+                else if (i === 3) mostrarMedia("img/WhatsApp Image 2026-04-23 at 11.50.45 PM.jpeg", "img");
+
+                i++;
+                setTimeout(progresarHistoria, 4000); 
+            }, 800);
+        }
+
+        function mostrarMedia(src, tipo) {
+            media.innerHTML = tipo === "img" 
+                ? `<img src="${src}">` 
+                : `<video autoplay muted playsinline><source src="${src}" type="video/mp4"></video>`;
+        }
+
+        function lanzarCorazones() {
+            setInterval(() => {
+                const c = document.createElement("div");
+                c.className = "corazon";
+                c.innerHTML = "💛"; // Puedes cambiar a "🖤" si quieres corazones negros
+                c.style.left = Math.random() * 100 + "vw";
+                c.style.fontSize = (Math.random() * 20 + 15) + "px";
+                c.style.animation = `subir ${Math.random() * 2 + 3}s linear forwards`;
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 5000);
+            }, 300);
+        }
+
+        function final() {
+            msg.innerText = "💛 Gracias por ser mi mejor amiga 💛";
+            media.innerHTML = `<img src="img/final.jpg">`;
+        }
+    </script>
+</body>
+</html>
